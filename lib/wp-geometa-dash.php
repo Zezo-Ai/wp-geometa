@@ -910,6 +910,15 @@ class WP_GeoMeta_Dash {
 	 * Start the GeoJSON import.
 	 */
 	public function wp_ajax_wpgm_start_geojson_import() {
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( array( 'msg' => 'Unauthorized: You do not have permission to perform this action.' ), 403 );
+		}
+
+		if ( ! check_ajax_referer( 'wpgm_import_nonce', 'security', false ) ) {
+			wp_send_json_error( array( 'msg' => 'Invalid security token.' ), 403 );
+		}
+
 		// Either upload or determine the ID of the source file.
 		if ( !empty( $_FILES['spatialimport'] ) ) {
 			$media_id = media_handle_sideload( $_FILES['spatialimport'], 0, 'WP-GeoMeta spatial import ' . date('Y-m-d h:i:s') );
@@ -1290,6 +1299,7 @@ class WP_GeoMeta_Dash {
 		print '<form action="' . admin_url('admin-ajax.php') . '" id="wpgeometa_import" method="POST" enctype="multipart/form-data">';
 		print '<label for="spatialimport">' . esc_html__('Select a GeoJSON file here', 'wp-geometa' ) . ': </label>';
 		print '<input type="hidden" name="action" value="wpgm_start_geojson_import">';
+		wp_nonce_field( 'wpgm_import_nonce', 'security' );
 		print '<input type="file" name="spatialimport"><br>';
 		print '<input type="submit" value="' . esc_attr__('Upload') . '">';
 		print '</form>';
