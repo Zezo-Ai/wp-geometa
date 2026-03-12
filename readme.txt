@@ -53,6 +53,10 @@ For fast and short questions you can [contact me](https://twitter.com/stuporglue
 
 == Changelog ==
 
+= 0.4.1 =
+ * Add capabilities check and nonce to import function
+ * Adjust DB engine detection to avoid fatal errors
+
 = 0.4.0 =
  * Tests passing up to PHP 8 / WP 6 / MySQL 8.
  * [WP-GeoMeta-Lib](https://github.com/BrilliantPlugins/wp-geometa-lib) updated to v0.4.0, addressing several [open issues](https://github.com/BrilliantPlugins/wp-geometa/issues)).
